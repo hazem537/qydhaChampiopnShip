@@ -10,12 +10,18 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@firebase/app-types": "^0.9.2",
     "@nuxt/icon": "^1.4.4",
     "@nuxt/ui": "^2.18.3",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.2",
+    "@samk-dev/nuxt-vcalendar": "^1.0.4",
+    "date-fns": "^2.30.0",
+    "firebase": "^10.12.5",
     "nuxt": "^3.12.4",
+    "nuxt-vuefire": "^1.0.3",
     "pinia": "^2.2.0",
+    "v-calendar": "^3.1.2",
     "vue": "latest",
     "yup": "^1.4.0"
   },

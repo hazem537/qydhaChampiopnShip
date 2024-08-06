@@ -12,13 +12,15 @@
       <UInput v-model="state.password" type="password" />
     </UFormGroup>
     <div>
-      <UButton type="submit" size="xl" label="تسجيل الدخول " /> 
+      <UButton type="submit" size="xl" label="تسجيل الدخول " />
     </div>
   </UForm>
 </template>
 
 <script lang="ts" setup>
 import { object, string } from "yup";
+import { useMyAuthStore } from "~/store/auth";
+const toast = useToast();
 const schema = object({
   username: string().required("اسم المستخدم مطلوب"),
   password: string().required("كلمة المرور مطلوب"),
@@ -27,8 +29,16 @@ const state = reactive<{ username: string; password: string }>({
   username: "",
   password: "",
 });
-const onSubmit = () => {
-  console.log(state);
+// const authStore = useMyAuthStore();
+const loginREQ = await useAuth().Login();
+const onSubmit = async () => {
+  await loginREQ.fetchREQ(state.username, state.password);
+  if (loginREQ.status.value == "success") {
+    toast.add({ title: " login  is ok " });
+    return navigateTo("/championship");
+  } else if (loginREQ.status.value == "error") {
+    toast.add({ title: " has error in login  " });
+  }
 };
 </script>
 
