@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import type { User } from "~/models/Uesr";
-import { useMyRefreshtokenStore } from "./refreshtoken";
+
+import { useMySidebarStore } from "./sidebar";
 
 export const useMyAuthStore = defineStore("MyAuthStore", () => {
-  const refreshTokenStrore=useMyRefreshtokenStore()
+  const sidebaeStore =useMySidebarStore()
+
   const user = ref<User | null>();
   const is_auth = computed(() => {
     if (user.value?.adminUser.id) {
@@ -15,12 +17,13 @@ export const useMyAuthStore = defineStore("MyAuthStore", () => {
 
   const login = (new_user: User) => {
     user.value = new_user;
-    refreshTokenStrore.refresh_token = user.value.refreshToken    
+
   };
   const logout = () => {
 
     user.value = null;
-    refreshTokenStrore.refresh_token = null
+    sidebaeStore.close()
+    // refreshTokenStrore.refresh_token = null
   };
 
   

@@ -1,5 +1,5 @@
 <template>
-  <UVerticalNavigation v-if="sidebarStore.status" :links="links" :ui="{ active: 'bg-red-500/50' }" />
+  <UVerticalNavigation v-if="sidebarStore.status" :links="links" :ui="{ active: 'bg-primary-500/50' }" />
 </template>
 
 <script lang="ts" setup>
@@ -12,6 +12,11 @@ const links = [
     label: "البطولات",
     icon: "hugeicons:champion",
     to: "/championship",
+  },
+  {
+    label: "الحضور",
+    icon: "medical-icon:i-registration",
+    to: "/attend",
   },
 ];
 </script>

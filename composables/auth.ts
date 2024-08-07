@@ -1,6 +1,5 @@
 import type { User } from "~/models/Uesr";
 import { useMyAuthStore } from "~/store/auth";
-import { useMyRefreshtokenStore } from "~/store/refreshtoken";
 
 export const useAuth = () => {
   const { $api } = useNuxtApp();
@@ -32,16 +31,7 @@ export const useAuth = () => {
     authStore.logout();
     return navigateTo("/")
   };
-  const refreshTokenStore =useMyRefreshtokenStore()
-  const refreshToken =async()=>{
-    const { data, pending, error, refresh,execute,status  } = await useAsyncData(
-        'refreshToken',
-        () => $api('')
-    );
-    if (!refreshTokenStore.pending){
-      refreshTokenStore.pending= true
 
-    }
-  }
-  return { Login, logout,refreshToken };
+  
+  return { Login, logout };
 };

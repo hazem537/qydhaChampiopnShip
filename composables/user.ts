@@ -1,11 +1,23 @@
+import type { User, UserI } from "~/models/Uesr";
+
 export const useUser = () => {
   const { $api } = useNuxtApp();
   const searchUser = async () => {
     const token = ref<string>();
     const { data, pending, error, refresh, execute, status } =
-      await useAsyncData(
+      await useAsyncData<{
+        data: {
+          users: {
+            currentPage: number;
+            totalPages: number;
+            pageSize: number;
+            items: UserI[];
+          };
+          message: string;
+        };
+      }>(
         "searchUser",
-        () => $api("users", { params: { SeachToken: token.value } }),
+        () => $api("users", { params: { SearchToken: token.value } }),
         { immediate: false }
       );
     const fetchREQ = async (_token: string) => {
@@ -14,7 +26,7 @@ export const useUser = () => {
     };
     return { data, pending, error, refresh, fetchREQ, status };
   };
-  
+
   const userAttend = async (champion_id: string) => {
     const user_id = ref<string>();
     const { data, pending, error, refresh, execute, status } =

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-5 justify-center items-center h-1/2 p-5">
+  <div class="flex gap-5 justify-center items-center h-full p-5">
     <div class="grow flex flex-col gap-10 items-center">
       <div class="flex gap-5">
         <h1
@@ -8,7 +8,7 @@
         </h1>
         <div>
           <h1
-            class="text-2xl bg-red-500 p-1 rounded-xl text-white dark:text-black opacity-0 champbadge">
+            class="text-2xl bg-primary-500 p-1 rounded-xl text-white dark:text-black opacity-0 champbadge">
             للبطولات
           </h1>
         </div>

@@ -1,10 +1,13 @@
 <template>
   <UCard>
-    <UTable :rows="championsStore.championsShips" :columns="cols" @select="onSelect">
+    <UTable
+      :rows="championships"
+      :columns="cols"
+      @select="onSelect">
       <template #name-data="{ row }">
         <!-- <div class="flex items-center gap-5"> -->
-          <!-- <UAvatar :src="row.logo" size="xl" /> -->
-          <h2>{{ row.name }}</h2>
+        <!-- <UAvatar :src="row.logo" size="xl" /> -->
+        <h2>{{ row.name }}</h2>
         <!-- </div> -->
       </template>
       <!-- <template #location-data="{ row }">
@@ -19,26 +22,29 @@
       </template>
     </UTable>
     <template #footer>
-      <UButton label="Add Championship " @click=" navigateTo('/championship/add')" />
+      <UButton
+        label="Add Championship "
+        @click="navigateTo('/championship/add')" />
     </template>
   </UCard>
 </template>
 
 <script lang="ts" setup>
-import { useMyChampionStore } from '~/store/champion';
+import { useMyChampionStore } from "~/store/champion";
 
-const championsStore = useMyChampionStore()
-
+const championsStore = useMyChampionStore();
+const championships = computed(() => {
+  return championsStore.championsShips;
+});
 const cols = [
   { label: "name", key: "name" },
   { label: "place", key: "place" },
   { label: "start_at", key: "start_at" },
   { label: "status", key: "done" },
 ];
-const onSelect=(row:any)=>{
-
-  return navigateTo(`/championship/${row.id}`)
-}
+const onSelect = (row: any) => {
+  return navigateTo(`/championship/${row.id}`);
+};
 </script>
 
 <style></style>

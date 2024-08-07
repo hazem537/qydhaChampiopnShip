@@ -34,7 +34,7 @@
           </UPopover>
         </div>
         <div class="grid grid-cols-3 gap-4">
-          <VDatePicker v-model="state.start_at" is-dark="true">
+          <VDatePicker v-model="state.start_at" :is-dark="true">
             <template #default="{ inputValue, inputEvents }">
               <UFormGroup label="start_at" name="start_at">
                 <UInput :value="inputValue" v-on="inputEvents" />

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 export const useMySidebarStore = defineStore('mySidebarStore',()=>{
-  const _status = ref<boolean>(true)
+  const _status = ref<boolean>(false)
   const status = computed(()=>{
     return _status.value
   })

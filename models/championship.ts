@@ -14,7 +14,7 @@ export enum Status  {
   PLAYING,
   TEAM1WIN,
   TEAM2WIN,
-  TEAMSLOSE
+  TWoTEAMLOSE
 }
 export interface ChampionChipI {
   id:number

@@ -12,7 +12,7 @@ export default defineAppConfig({
       body: { base: "flex flex-col gap-2 grow" },
     },
     formGroup:{
-      default:{size:"xs"}
+      // default:{size:"xs"}
     }
   },
 });

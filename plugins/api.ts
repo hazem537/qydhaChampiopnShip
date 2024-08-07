@@ -1,10 +1,9 @@
 import { useMyAuthStore } from "~/store/auth";
-import { useMyRefreshtokenStore } from "~/store/refreshtoken";
+
 
 export default defineNuxtPlugin(() => {
   // get user data if it exist or not
   const authStore = useMyAuthStore();
-  const refreshTokenStore = useMyRefreshtokenStore();
   const config = useRuntimeConfig();
   const $api = $fetch.create({
     baseURL: config.public.apiBase as string,
@@ -19,11 +18,14 @@ export default defineNuxtPlugin(() => {
     },
     onResponseError: async ({ request, response, options }) => {
       if (response.status == 401) {
+  
         try {
           // Attempt to refresh the token
           await refreshAccessToken();
           // Retry the original request with the new token
-          const newToken = authStore.user?.jwtToken;
+
+          
+
           const method = options.method?.toUpperCase() as
             | "OPTIONS"
             | "GET"
@@ -35,16 +37,20 @@ export default defineNuxtPlugin(() => {
             | "CONNECT"
             | "TRACE"
             | undefined;
-          if (newToken) {
-            options.headers! = {
-              ...options.headers!,
-              Autorization: `Bearer ${newToken}`,
+             options = {
+              ...options,
+              headers: {
+                ...options.headers,
+                Authorization: `Bearer ${authStore.user?.jwtToken}`,
+              },
             };
-          }
-          return $fetch(request, { options, method }); // Retry t he original request
+          
+            await refreshNuxtData()
+          // await  $api(request); // Retry t he original request
         } catch (error) {
+          console.log(error);
           // Redirect to the login page if the token refresh fails
-          authStore.logout()
+          authStore.logout();
           navigateTo("/");
         }
       }
@@ -53,7 +59,8 @@ export default defineNuxtPlugin(() => {
 
   async function refreshAccessToken() {
     const jwtToken = authStore.user?.jwtToken;
-    const refreshToken = refreshTokenStore.refresh_token;
+    const refreshToken = authStore.user?.refreshToken;
+
 
     // Check if both tokens are available
     if (!jwtToken || !refreshToken) {
@@ -62,21 +69,29 @@ export default defineNuxtPlugin(() => {
 
     try {
       const response = await $fetch<{
-        data: { jwtToken: string };
+        data: {
+          jwtToken: string;
+          refreshToken: string;
+          refreshTokenExpirationDate: string;
+        };
         message: string;
-      }>("/auth/refresh-token", {
+      }>("auth/refresh-token", {
         method: "POST",
         baseURL: config.public.apiBase,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwtToken}`, // Include the current JWT token
         },
-        body: JSON.stringify({ refreshToken }), // Include the refresh token in the request body
+        body: JSON.stringify({
+          refreshToken: refreshToken,
+          jwtToken: jwtToken,
+        }), // Include the refresh token in the request body
       });
-
+      console.log(response);
       if (response && response.data.jwtToken) {
         // Update the auth store with the new token
         authStore.user!.jwtToken = response.data.jwtToken;
+        authStore.user!.refreshToken = response.data.refreshToken;
       } else {
         throw new Error("Failed to refresh token");
       }
